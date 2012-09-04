@@ -1,0 +1,79 @@
+<!DOCTYPE html><html><head><title>README</title><meta http-equiv="Content-Type" content="text/html" charset="UTF-8"><link rel="stylesheet" media="all" href="./docco.css"></head><body><div id="container"><div id="background"></div><div id="jump_to">Jump To &hellip;<div id="jump_wrapper"><div id="jump_page"><a href="./index.html" class="source"><span class="file_name">README</span></a><a href="./list.js.html" class="source "><span class="base_path">. / </span><span class="file_name">list.js</span></a><a href="./tuple.js.html" class="source "><span class="base_path">. / </span><span class="file_name">tuple.js</span></a></div></div></div><table cellpadding="0" cellspacing="0"><thead><tr><th class="docs"></th><th class="code"></th></tr></thead><tbody><tr id="section"><td class="docs"><p><h3>Stats</h3><pre class="code_stats">
+http://cloc.sourceforge.net v 1.55  T=0.5 s (4.0 files/s, 772.0 lines/s)
+-------------------------------------------------------------------------------
+Language                     files          blank        comment           code
+-------------------------------------------------------------------------------
+Javascript                       2             54            207            125
+-------------------------------------------------------------------------------
+SUM:                             2             54            207            125
+-------------------------------------------------------------------------------
+</pre></p></td><td id="content" class="code"><h1>funcjs</h1>
+
+<blockquote>
+  <p>Pure functional javascript library </p>
+</blockquote>
+
+<h2>Introduction</h2>
+
+<p>funcjs is a pure functional library without side effects
+and 100% immutable. It consists of a list and a tuple library
+but many other components are under development.</p>
+
+<h2>Documentation</h2>
+
+<blockquote>
+  <p>Check the docs/ directory for api documentation</p>
+</blockquote>
+
+<h2>Examples</h2>
+
+<blockquote>
+  <p>Check examples.js</p>
+</blockquote>
+
+<p>Initiate a new list:</p>
+
+<pre><code>var list = new fpl.List(1,2,3,4,5,6,7,8,9,10)
+</code></pre>
+
+<p>Get the first element:</p>
+
+<pre><code>list.head()
+</code></pre>
+
+<p>Get everything but the first element:</p>
+
+<pre><code>list.tail()
+</code></pre>
+
+<p>Combination of different list functions:</p>
+
+<pre><code>list
+  .takeWhile(function(x) { return x &lt; 8; })
+  .map(function(x) { return x * 2; })
+  .foldLeft(0, function(x,xs) { return x+xs })
+</code></pre>
+
+<p>Example of zip (using the tuples library):</p>
+
+<pre><code>list.zip(list.reverse())
+</code></pre>
+
+<p>Example of zipWith (a more generic form then zip):</p>
+
+<pre><code>list
+  .zipWith(function(x,y) { return new fpt.Tuple(x*2, y*2) },
+    list.reverse())
+</code></pre>
+
+<p>Another example of dynamically building a immutable list</p>
+
+<pre><code>list
+  .add(5)
+  .add(2)
+  .take(4)
+</code></pre>
+
+<h2>Author</h2>
+
+<p>Tobias Wenergren (wennergr@gmail.com)</p>  </td></tr></tbody></table><div id="generated">generated Mon Sep 03 2012 18:54:45 GMT-0700 (PDT)  </div><div id="projectname"><a href="./index.html">funcjs</a></div></div></body></html>
