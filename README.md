@@ -1,4 +1,4 @@
-funcjs
+funkjs
 ======
 
 > Pure functional javascript library 
@@ -7,7 +7,7 @@ funcjs
 Introduction
 ------------
 
-funcjs is a pure functional library without side effects
+funkjs is a pure functional library without side effects
 and 100% immutable. It consists of a list and a tuple library
 but many other components are under development.
 
