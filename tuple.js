@@ -22,6 +22,9 @@
  * @return {List} a tuple
  */
 function Tuple(a,b) {
+
+  if ( !(this instanceof Tuple) ) 
+    return new Tuple(a, b);
   
   /**
    * Return first object

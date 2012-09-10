@@ -34,6 +34,9 @@ function Nil() {
  */
 function Cons(x, xs) {
 
+  if ( !(this instanceof Cons) ) 
+    return new Cons(x, xs);
+
   /**
    * Pretty print out information about the list
    *

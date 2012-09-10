@@ -19,6 +19,15 @@ vows
         
         assert.equal(tuple.toString(), "(1, 2)")
           
+  # Verifying that lists works even if a user foregetts the "new" keyword
+    'System is working without new':
+      topic: t.Tuple(1,2),
+      'rendering of the tuple': (tuple) ->
+        assert.equal(tuple.toString(), "(1, 2)")
+
+      'calling methods is still working': (tuple) ->
+        assert.equal(tuple.first(), 1)
+        assert.equal(tuple.second(), 2)
 
 ).export(module)
 

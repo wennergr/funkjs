@@ -167,6 +167,15 @@ vows
         assert.equal(l.Nil.concat(lst),
           "1 :: 2 :: 3 :: 4 :: Nil")
 
+  # Verifying that lists works even if a user foregetts the "new" keyword
+    'System is working without new':
+      topic: l.List(1,2,3,4),
+      'rendering of the list': (lst) ->
+        assert.equal(lst.toString(), "1 :: 2 :: 3 :: 4 :: Nil")
+
+      'calling inherited methods': (lst) ->
+        assert.equal(lst.add(1).toString(), "1 :: 1 :: 2 :: 3 :: 4 :: Nil")
+
 ).export(module)
 
 
