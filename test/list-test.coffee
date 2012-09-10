@@ -195,6 +195,22 @@ vows
         assert.equal(l.Nil.flatten().toString(), "List()")
 
 
+  # Verifying that flatMap works correctly
+    'FlatMap of lists (flatMap)':
+      topic: new l.List(1,2,3,4),
+      'Identify flatmap': (lst) ->
+        assert.equal(new l.List(lst, lst).flatMap( (x) -> x ).toString(),
+          "List(1 :: 2 :: 3 :: 4 :: 1 :: 2 :: 3 :: 4 :: Nil)")
+
+      'Removing with flatmap': (lst) ->
+        assert.equal(lst.flatMap( 
+            (x) -> if x == 2 then l.Nil else new l.List(x) ).toString(),
+          "List(1 :: 3 :: 4 :: Nil)");
+
+      'Adding with flatmap': (lst) ->
+        assert.equal(l.List(1,2,3,4).flatMap( 
+            (x) -> new l.List(x,x)).toString(),
+          "List(1 :: 1 :: 2 :: 2 :: 3 :: 3 :: 4 :: 4 :: Nil)");
 
 
 ).export(module)

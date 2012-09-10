@@ -305,7 +305,20 @@ var _prototype = {
     if (head instanceof Cons) return head.flatten().concat(this.tail().flatten());
     else return new Cons(head, this.tail().flatten());
   },
- 
+
+  /**
+   * Flattens a list a list using a function
+   * Complexity O(n), n = total amount of elements
+   *
+   * @param {Function(x)} Function from X -> List[Y]
+   * @return {List} A new flatten:ed and mapped list
+   */   
+  "flatMap" : function(fn) {
+    if (this === NilO) return NilO;
+
+    return fn(this.head()).concat(this.tail().flatMap(fn));
+  },
+  
   /**
    * Build's an array based on a list
    * Complexity O(n), n = elements in the list
