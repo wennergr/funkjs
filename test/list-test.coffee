@@ -152,6 +152,20 @@ vows
         assert.equal(lst.zipWith( ((x,y) -> x+y), new l.List(1,1,1)).toString(), 
           "2 :: 3 :: 4 :: Nil")
 
+  # Test the concat function
+    'concatination of lists':
+      topic: new l.List(1,2,3,4),
+      'concat of two non empty list': (lst) ->
+        assert.equal(lst.concat(new l.List(1,2)),
+          "1 :: 2 :: 3 :: 4 :: 1 :: 2 :: Nil")
+
+      'concat with empty list': (lst) ->
+        assert.equal(lst.concat(l.Nil),
+          "1 :: 2 :: 3 :: 4 :: Nil")
+
+      'concat from empty list': (lst) ->
+        assert.equal(l.Nil.concat(lst),
+          "1 :: 2 :: 3 :: 4 :: Nil")
 
 ).export(module)
 

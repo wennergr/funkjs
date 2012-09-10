@@ -261,6 +261,25 @@ var _prototype = {
     return this.zipWith( function(x,y) { return new t.Tuple(x,y) }, lst );
   },
 
+
+  /**
+   * Returns a new list crated by concatination with a second list
+   * Complexity O(n), n = elements in the first list
+   *
+   * @param {List} List to merge with
+   * @return {List} A new merged list
+   */   
+  "concat" : function(lst) {
+    /* Starting from empty list */    
+    if (this === NilO) return lst;
+
+    /* Reached end of first list */
+    else if (this.tail() === NilO) return new Cons(this.head(), lst); 
+
+    /* Copy eveything from the current list to a new one */
+    else return new Cons(this.head(), this.tail().concat(lst));
+  },
+
   /**
    * Build's an array based on a list
    * Complexity O(n), n = elements in the list
