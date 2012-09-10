@@ -17,8 +17,12 @@ var t = require("./tuple")
  */
 function Nil() {
 
-  this.toString = function() { 
+  this._toString = function() { 
     return "Nil"
+  }
+
+  this.toString = function() { 
+    return "List()";
   }
 
   return this;
@@ -42,9 +46,13 @@ function Cons(x, xs) {
    *
    * @return {String} String implementation of the list
    */
+  this._toString = function() {
+    if (this.head() === NilO) return this.head()._toString();
+    return this.head() + " :: " + this.tail()._toString();
+  }
+
   this.toString = function() {
-    if (this.head() === NilO) return this.head().toString();
-    return this.head() + " :: " + this.tail().toString();
+    return "List("+this._toString()+")"
   };
 
   /**

@@ -139,42 +139,43 @@ vows
       topic: new l.List(1,2,3,4),
       'Correctly with lists of even sizes': (lst) ->
         assert.equal(lst.zipWith( ((x,y) -> x+y), new l.List(1,1,1,1)).toString(), 
-          "2 :: 3 :: 4 :: 5 :: Nil")
+          "List(2 :: 3 :: 4 :: 5 :: Nil)")
 
         assert.equal(lst.zip(new l.List(1,1,1,1)).toString(),
-          "(1, 1) :: (2, 1) :: (3, 1) :: (4, 1) :: Nil")
+          "List((1, 1) :: (2, 1) :: (3, 1) :: (4, 1) :: Nil)")
 
 
       'Correctly with lists of uneven sizes': (lst) ->
         assert.equal(lst.zip(new l.List(1,1,1)).toString(),
-          "(1, 1) :: (2, 1) :: (3, 1) :: Nil")
+          "List((1, 1) :: (2, 1) :: (3, 1) :: Nil)")
 
         assert.equal(lst.zipWith( ((x,y) -> x+y), new l.List(1,1,1)).toString(), 
-          "2 :: 3 :: 4 :: Nil")
+          "List(2 :: 3 :: 4 :: Nil)")
 
   # Test the concat function
     'concatination of lists':
       topic: new l.List(1,2,3,4),
       'concat of two non empty list': (lst) ->
         assert.equal(lst.concat(new l.List(1,2)),
-          "1 :: 2 :: 3 :: 4 :: 1 :: 2 :: Nil")
+          "List(1 :: 2 :: 3 :: 4 :: 1 :: 2 :: Nil)")
 
       'concat with empty list': (lst) ->
         assert.equal(lst.concat(l.Nil),
-          "1 :: 2 :: 3 :: 4 :: Nil")
+          "List(1 :: 2 :: 3 :: 4 :: Nil)")
 
       'concat from empty list': (lst) ->
         assert.equal(l.Nil.concat(lst),
-          "1 :: 2 :: 3 :: 4 :: Nil")
+          "List(1 :: 2 :: 3 :: 4 :: Nil)")
 
   # Verifying that lists works even if a user foregetts the "new" keyword
     'System is working without new':
       topic: l.List(1,2,3,4),
       'rendering of the list': (lst) ->
-        assert.equal(lst.toString(), "1 :: 2 :: 3 :: 4 :: Nil")
+        assert.equal(lst.toString(), "List(1 :: 2 :: 3 :: 4 :: Nil)")
 
       'calling inherited methods': (lst) ->
-        assert.equal(lst.add(1).toString(), "1 :: 1 :: 2 :: 3 :: 4 :: Nil")
+        assert.equal(lst.add(1).toString(), "List(1 :: 1 :: 2 :: 3 :: 4 :: Nil)")
+
 
 ).export(module)
 
