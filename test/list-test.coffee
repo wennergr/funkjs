@@ -177,6 +177,26 @@ vows
         assert.equal(lst.add(1).toString(), "List(1 :: 1 :: 2 :: 3 :: 4 :: Nil)")
 
 
+  # Verifying that the flatten function works as expected
+    'Flattening of lists (flatten)':
+      topic: new l.List(1,new l.List(2,3),3,4),
+      'flatten of 2 dimentional lists': (lst) ->
+        assert.equal(lst.flatten().toString(), "List(1 :: 2 :: 3 :: 3 :: 4 :: Nil)")
+
+      'flatten of 1 dimentional lists': (lst) ->
+        assert.equal(new l.List(1,2,3).flatten().toString(), "List(1 :: 2 :: 3 :: Nil)")
+
+      'flatten of 3 dimentional lists': (lst) ->
+        assert.equal(new l.List(1, l.List(1, l.List(2, 4)),2,3).flatten().toString(), 
+          "List(1 :: 1 :: 2 :: 4 :: 2 :: 3 :: Nil)")
+
+
+      'flatten of an empty list': (lst) ->
+        assert.equal(l.Nil.flatten().toString(), "List()")
+
+
+
+
 ).export(module)
 
 

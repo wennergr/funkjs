@@ -292,6 +292,21 @@ var _prototype = {
   },
 
   /**
+   * Flattens a list of lists
+   * Complexity O(n), n = total amount of elements
+   *
+   * @return {List} A new flatten:ed list
+   */   
+  "flatten" : function() {
+    if (this === NilO) return NilO;
+
+    var head = this.head();
+
+    if (head instanceof Cons) return head.flatten().concat(this.tail().flatten());
+    else return new Cons(head, this.tail().flatten());
+  },
+ 
+  /**
    * Build's an array based on a list
    * Complexity O(n), n = elements in the list
    *
