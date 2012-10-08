@@ -7,7 +7,7 @@ vows
   .addBatch(
   # Tests of adding values to a list
     'Adding value':
-      topic : new l.List(1,2,3,4),
+      topic : new l.fromVarargs(1,2,3,4),
       'dosen\'t modify the original list' : (lst) ->
         lstSerialized = lst.toString()
 
@@ -22,11 +22,11 @@ vows
         assert.equal(lst.length()+2, lst.add(5).add(2).length())
 
       'Can add into an empty list' : (lst) ->
-        assert.equal(l.Nil.add(1).toString(), new l.List(1))
+        assert.equal(l.emptyList().add(1).toString(), new l.fromVarargs(1))
 
   # Tests of taking values from a list
     'Taking values':
-      topic : new l.List(1,2,3,4,5,6),
+      topic : new l.fromVarargs(1,2,3,4,5,6),
       'dosen\'t modify the original list' : (lst) ->
         lstSerialized = lst.toString()
 
@@ -39,20 +39,20 @@ vows
         assert.equal(lst.toString(), lstSerialized)
 
       'grabs the first 2 elements' : (lst) ->
-        assert.equal(lst.take(2).toString(), new l.List(1,2).toString())
+        assert.equal(lst.take(2).toString(), new l.fromVarargs(1,2).toString())
 
       'take while x < 5 only returns number smaller then 5' : (lst) ->
         assert.equal(lst.takeWhile( (x) -> x < 5 ).toString(),
-          new l.List(1,2,3,4).toString())
+          new l.fromVarargs(1,2,3,4).toString())
 
       'take from an empty list' : (lst) ->
-        assert.equal(l.Nil.take(2).toString(), l.Nil.toString())
-        assert.equal(l.Nil.takeWhile( (x) -> x < 5; ).toString(),
-          l.Nil.toString())
+        assert.equal(l.emptyList().take(2).toString(), l.emptyList().toString())
+        assert.equal(l.emptyList().takeWhile( (x) -> x < 5; ).toString(),
+          l.emptyList().toString())
 
   # Tests of dropping values from a list
     'Dropping values':
-      topic : new l.List(1,2,5,2,1),
+      topic : new l.fromVarargs(1,2,5,2,1),
       'dosen\'t modify the original list' : (lst) ->
         lstSerialized = lst.toString()
 
@@ -65,29 +65,29 @@ vows
         assert.equal(lst.toString(), lstSerialized)
 
       'Drop the first 2 elements' : (lst) ->
-        assert.equal(lst.drop(2).toString(), new l.List(5,2,1).toString())
+        assert.equal(lst.drop(2).toString(), new l.fromVarargs(5,2,1).toString())
 
       'Drop while x < 5' : (lst) ->
         assert.equal(lst.dropWhile( (x) -> x < 5 ).toString(),
-          new l.List(5,2,1).toString())
+          new l.fromVarargs(5,2,1).toString())
 
       'drop from an empty list' : (lst) ->
-        assert.equal(l.Nil.drop(2).toString(), l.Nil.toString())
-        assert.equal(l.Nil.dropWhile( (x) -> x < 5 ).toString(),
-          l.Nil.toString())
+        assert.equal(l.emptyList().drop(2).toString(), l.emptyList().toString())
+        assert.equal(l.emptyList().dropWhile( (x) -> x < 5 ).toString(),
+          l.emptyList().toString())
 
   # Verifing that the length function works correct
     'length of list':
-      topic : new l.List(1,2,3,4),
+      topic : new l.fromVarargs(1,2,3,4),
       'length of list' : (lst) ->
         assert.equal(lst.length(), 4)
 
       'length of an empty list' : (lst) ->
-        assert.equal(l.Nil.length(), 0)
+        assert.equal(l.emptyList().length(), 0)
     
   # Verify that the fold methods works correctly
     'Folding in different dirctions':
-      topic : new l.List(1,2,3,4,5,4,3,2,1),
+      topic : new l.fromVarargs(1,2,3,4,5,4,3,2,1),
       'dosen\'t modify the original list' : (lst) ->
         lstSerialized = lst.toString()
 
@@ -108,12 +108,12 @@ vows
         assert.equal(lst.foldRight(0, (xs, x) -> xs+x), 25)
 
       'Folding over an empty list' : (lst) ->
-        assert.equal(l.Nil.foldLeft(2, (xs, x) -> xs+x; ), 2)
-        assert.equal(l.Nil.foldRight(2, (xs, x) -> xs+x; ), 2)
+        assert.equal(l.emptyList().foldLeft(2, (xs, x) -> xs+x; ), 2)
+        assert.equal(l.emptyList().foldRight(2, (xs, x) -> xs+x; ), 2)
     
   # Test of the exists operator
     'Exists':
-      topic : new l.List(1,2,3,4),
+      topic : new l.fromVarargs(1,2,3,4),
       'dosen\'t modify the original list': (lst) ->
         lstSerialized = lst.toString()
 
@@ -132,44 +132,44 @@ vows
         assert.equal(lst.exists(9), false)
 
       'With empty list' : (lst) ->
-        assert.equal(l.Nil.exists(8), false)
+        assert.equal(l.emptyList().exists(8), false)
 
   # Test zip function
     'ZipWith (and special case zip)':
-      topic: new l.List(1,2,3,4),
+      topic: new l.fromVarargs(1,2,3,4),
       'Correctly with lists of even sizes': (lst) ->
-        assert.equal(lst.zipWith( ((x,y) -> x+y), new l.List(1,1,1,1)).toString(), 
+        assert.equal(lst.zipWith( ((x,y) -> x+y), new l.fromVarargs(1,1,1,1)).toString(), 
           "List(2 :: 3 :: 4 :: 5 :: Nil)")
 
-        assert.equal(lst.zip(new l.List(1,1,1,1)).toString(),
+        assert.equal(lst.zip(new l.fromVarargs(1,1,1,1)).toString(),
           "List((1, 1) :: (2, 1) :: (3, 1) :: (4, 1) :: Nil)")
 
 
       'Correctly with lists of uneven sizes': (lst) ->
-        assert.equal(lst.zip(new l.List(1,1,1)).toString(),
+        assert.equal(lst.zip(new l.fromVarargs(1,1,1)).toString(),
           "List((1, 1) :: (2, 1) :: (3, 1) :: Nil)")
 
-        assert.equal(lst.zipWith( ((x,y) -> x+y), new l.List(1,1,1)).toString(), 
+        assert.equal(lst.zipWith( ((x,y) -> x+y), new l.fromVarargs(1,1,1)).toString(), 
           "List(2 :: 3 :: 4 :: Nil)")
 
   # Test the concat function
     'concatination of lists':
-      topic: new l.List(1,2,3,4),
+      topic: new l.fromVarargs(1,2,3,4),
       'concat of two non empty list': (lst) ->
-        assert.equal(lst.concat(new l.List(1,2)),
+        assert.equal(lst.concat(new l.fromVarargs(1,2)),
           "List(1 :: 2 :: 3 :: 4 :: 1 :: 2 :: Nil)")
 
       'concat with empty list': (lst) ->
-        assert.equal(lst.concat(l.Nil),
+        assert.equal(lst.concat(l.emptyList()),
           "List(1 :: 2 :: 3 :: 4 :: Nil)")
 
       'concat from empty list': (lst) ->
-        assert.equal(l.Nil.concat(lst),
+        assert.equal(l.emptyList().concat(lst),
           "List(1 :: 2 :: 3 :: 4 :: Nil)")
 
   # Verifying that lists works even if a user foregetts the "new" keyword
     'System is working without new':
-      topic: l.List(1,2,3,4),
+      topic: l.fromVarargs(1,2,3,4),
       'rendering of the list': (lst) ->
         assert.equal(lst.toString(), "List(1 :: 2 :: 3 :: 4 :: Nil)")
 
@@ -179,37 +179,37 @@ vows
 
   # Verifying that the flatten function works as expected
     'Flattening of lists (flatten)':
-      topic: new l.List(1,new l.List(2,3),3,4),
+      topic: new l.fromVarargs(1,new l.fromVarargs(2,3),3,4),
       'flatten of 2 dimentional lists': (lst) ->
         assert.equal(lst.flatten().toString(), "List(1 :: 2 :: 3 :: 3 :: 4 :: Nil)")
 
       'flatten of 1 dimentional lists': (lst) ->
-        assert.equal(new l.List(1,2,3).flatten().toString(), "List(1 :: 2 :: 3 :: Nil)")
+        assert.equal(new l.fromVarargs(1,2,3).flatten().toString(), "List(1 :: 2 :: 3 :: Nil)")
 
       'flatten of 3 dimentional lists': (lst) ->
-        assert.equal(new l.List(1, l.List(1, l.List(2, 4)),2,3).flatten().toString(), 
+        assert.equal(new l.fromVarargs(1, l.fromVarargs(1, l.fromVarargs(2, 4)),2,3).flatten().toString(), 
           "List(1 :: 1 :: 2 :: 4 :: 2 :: 3 :: Nil)")
 
 
       'flatten of an empty list': (lst) ->
-        assert.equal(l.Nil.flatten().toString(), "List()")
+        assert.equal(l.emptyList().flatten().toString(), "List()")
 
 
   # Verifying that flatMap works correctly
     'FlatMap of lists (flatMap)':
-      topic: new l.List(1,2,3,4),
+      topic: new l.fromVarargs(1,2,3,4),
       'Identify flatmap': (lst) ->
-        assert.equal(new l.List(lst, lst).flatMap( (x) -> x ).toString(),
+        assert.equal(new l.fromVarargs(lst, lst).flatMap( (x) -> x ).toString(),
           "List(1 :: 2 :: 3 :: 4 :: 1 :: 2 :: 3 :: 4 :: Nil)")
 
       'Removing with flatmap': (lst) ->
         assert.equal(lst.flatMap( 
-            (x) -> if x == 2 then l.Nil else new l.List(x) ).toString(),
+            (x) -> if x == 2 then l.emptyList() else new l.fromVarargs(x) ).toString(),
           "List(1 :: 3 :: 4 :: Nil)");
 
       'Adding with flatmap': (lst) ->
-        assert.equal(l.List(1,2,3,4).flatMap( 
-            (x) -> new l.List(x,x)).toString(),
+        assert.equal(l.fromVarargs(1,2,3,4).flatMap( 
+            (x) -> new l.fromVarargs(x,x)).toString(),
           "List(1 :: 1 :: 2 :: 2 :: 3 :: 3 :: 4 :: 4 :: Nil)");
 
 

@@ -25,7 +25,7 @@ Examples
 
 Initiate a new list:
 ```javascript
-    var list = new fpl.List(1,2,3,4,5,6,7,8,9,10)
+    var list = new fpl.fromVarargs(1,2,3,4,5,6,7,8,9,10)
 ```
 
 Get the first element:

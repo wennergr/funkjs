@@ -13,76 +13,11 @@
 var t = require("./tuple")
 
 /**
- * The Nil Object representing end of list
- */
-function Nil() {
-
-  this._toString = function() { 
-    return "Nil"
-  }
-
-  this.toString = function() { 
-    return "List()";
-  }
-
-  return this;
-}
-
-
-/**
- * Base part of any list. Represent's A current element + a link to next Cons.
- *
- * @example
- *  
- *  new Cons(1, new Const(2, new Const(3, Nil)));
- */
-function Cons(x, xs) {
-
-  if ( !(this instanceof Cons) ) 
-    return new Cons(x, xs);
-
-  /**
-   * Pretty print out information about the list
-   *
-   * @return {String} String implementation of the list
-   */
-  this._toString = function() {
-    if (this.head() === NilO) return this.head()._toString();
-    return this.head() + " :: " + this.tail()._toString();
-  }
-
-  this.toString = function() {
-    return "List("+this._toString()+")"
-  };
-
-  /**
-   * Returns the current element in the list
-   *
-   * @return {Object} returns the current element
-   */
-  this.head = function() {
-    return x;
-  };
-
-  /**
-   * Returns a list of everything except the current element
-   *
-   * @return {List} everything except the current element
-   */
-  this.tail = function() {
-    return xs;
-  };
-
-  return this;
-}
-
-
-/**
- * Companion object for a richer interface to Cons and Nil
+ * Companion object for a richer interface to cons and Nil
  */
 var _prototype = {
 
-  "valid" : function(x, fn) { return this !== NilO && fn(x) },
+  "valid" : function(x, fn) { return this !== nil() && fn(x) },
 
   /**
    * Add an element to a list
@@ -92,7 +27,7 @@ var _prototype = {
    * @return {List} a new list with the added element
    */
   "add" : function(e) {
-    return new Cons(e, this);
+    return new cons(e, this);
   },
 
 
@@ -103,10 +38,10 @@ var _prototype = {
    * @return {List} a new list with all elements except last one
    */
   "init" : function() {
-    if (this.tail() === NilO) 
+    if (this.tail() === nil()) 
       return this.tail();
 
-    return new Cons(this.head(), this.tail().init());
+    return new cons(this.head(), this.tail().init());
   },
 
   /**
@@ -117,10 +52,10 @@ var _prototype = {
    * @return {List} a new list with the taken objects
    */
   "take" : function(n) {
-    if (n === 0 || this === NilO) 
-      return NilO;
+    if (n === 0 || this === nil()) 
+      return nil();
 
-    return new Cons(this.head(), this.tail().take(n-1));
+    return new cons(this.head(), this.tail().take(n-1));
   },
 
   /**
@@ -131,10 +66,10 @@ var _prototype = {
    * @return {List} a new list with the taken objects
    */
   "takeWhile" : function(fn) {
-    if (this === NilO || !this.valid(this.head(), fn)) 
-      return NilO;
+    if (this === nil() || !this.valid(this.head(), fn)) 
+      return nil();
 
-    return new Cons(this.head(), this.tail().takeWhile(fn));
+    return new cons(this.head(), this.tail().takeWhile(fn));
   },
 
   /**
@@ -145,7 +80,7 @@ var _prototype = {
    * @return {List} a new list with everything except the dropped elements
    */
   "drop" : function(n) {
-    if (this === NilO ) return NilO;
+    if (this === nil() ) return nil();
     else if( n === 0 ) return this;
     return this.tail().drop(n-1);
   },
@@ -158,7 +93,7 @@ var _prototype = {
    * @return {List} a new list with everything except the dropped elements
    */
   "dropWhile" : function(fn) {
-    if (this === NilO ) return NilO;
+    if (this === nil() ) return nil();
     else if (!fn(this.head())) return this;
     return this.tail().dropWhile(fn)
   },
@@ -171,7 +106,7 @@ var _prototype = {
    * @return {Object} result of the binary function over the list
    */
   "foldLeft" : function(init, fn) {
-    if (this === NilO) return init;
+    if (this === nil()) return init;
     return this.tail().foldLeft(fn(init, this.head()), fn);
   },
 
@@ -183,7 +118,7 @@ var _prototype = {
    * @return {Object} result of the binary function over the list
    */
   "foldRight" : function(init, fn) {
-    if (this === NilO) return init;
+    if (this === nil()) return init;
     return fn(this.tail().foldRight(init, fn), this.head());
   },
 
@@ -194,7 +129,7 @@ var _prototype = {
    * @return {List} a new list
    */
   "reverse" : function() {
-    return this.foldLeft(List(), function(xs,x) { return xs.add(x) });
+    return this.foldLeft(nil(), function(xs,x) { return xs.add(x) });
   },
 
 
@@ -206,9 +141,9 @@ var _prototype = {
    * @return {List} a new list with all elements that satised the preficate
    */
   "filter" : function(fn) {
-    if (this === NilO) return NilO
+    if (this === nil()) return nil()
     return fn(this.head()) 
-      ? new Cons(this.head(), this.tail().filter(fn))
+      ? new cons(this.head(), this.tail().filter(fn))
       : this.tail().filter(fn);
   },
 
@@ -220,8 +155,8 @@ var _prototype = {
    * @return {List} a new list with the function applied to each argument
    */
   "map" : function(fn) {
-    if (this === NilO) return NilO
-    return new Cons(fn(this.head()), this.tail().map(fn));
+    if (this === nil()) return nil()
+    return new cons(fn(this.head()), this.tail().map(fn));
   },
 
   /**
@@ -243,7 +178,7 @@ var _prototype = {
    * @return {Boolean} True if the object exists, else false
    */
   "exists" : function(e) {
-    if (this == NilO) return false;
+    if (this === nil()) return false;
     return e === this.head() || this.tail().exists(e);
   },
 
@@ -256,8 +191,8 @@ var _prototype = {
    * @return {List} A new merged list
    */
   "zipWith" : function(fn, lst) {
-    if (this === NilO || lst === NilO) return NilO;
-    else return new Cons(fn(this.head(), lst.head()), this.tail().zipWith(fn, lst.tail()));
+    if (this === nil() || lst === nil()) return nil();
+    else return new cons(fn(this.head(), lst.head()), this.tail().zipWith(fn, lst.tail()));
   },
 
   /**
@@ -282,13 +217,13 @@ var _prototype = {
    */   
   "concat" : function(lst) {
     /* Starting from empty list */    
-    if (this === NilO) return lst;
+    if (this === nil()) return lst;
 
     /* Reached end of first list */
-    else if (this.tail() === NilO) return new Cons(this.head(), lst); 
+    else if (this.tail() === nil()) return new cons(this.head(), lst); 
 
     /* Copy eveything from the current list to a new one */
-    else return new Cons(this.head(), this.tail().concat(lst));
+    else return new cons(this.head(), this.tail().concat(lst));
   },
 
   /**
@@ -298,12 +233,12 @@ var _prototype = {
    * @return {List} A new flatten:ed list
    */   
   "flatten" : function() {
-    if (this === NilO) return NilO;
+    if (this === nil()) return nil();
 
     var head = this.head();
 
-    if (head instanceof Cons) return head.flatten().concat(this.tail().flatten());
-    else return new Cons(head, this.tail().flatten());
+    if (head instanceof cons) return head.flatten().concat(this.tail().flatten());
+    else return new cons(head, this.tail().flatten());
   },
 
   /**
@@ -314,11 +249,12 @@ var _prototype = {
    * @return {List} A new flatten:ed and mapped list
    */   
   "flatMap" : function(fn) {
-    if (this === NilO) return NilO;
+    if (this === nil()) return nil();
 
     return fn(this.head()).concat(this.tail().flatMap(fn));
   },
-  
+
+ 
   /**
    * Build's an array based on a list
    * Complexity O(n), n = elements in the list
@@ -329,7 +265,7 @@ var _prototype = {
     var array = Array();
 
     function f(x) { 
-      if (x !== NilO) p.push(x.head()) && f(x.tail()); 
+      if (x !== nil()) p.push(x.head()) && f(x.tail()); 
     }
 
     f(this);
@@ -338,49 +274,110 @@ var _prototype = {
   }
 }
 
-/* Both Cons and Nil should inherit from _prototype */
-Cons.prototype = _prototype;
-Nil.prototype = _prototype;
 
 /**
- * Implementation of 
- *
- * @return {List} A new array
- */ 
-var NilO = new Nil();
-
-/**
- * Constructor method around the Cons function
- * 
- * @examples
- *  
- *  var list = new List(1,2,3,4,5);
- *
- * @param {List} List of arguments
- * @return {List} a fully qualifed list
+ * The Nil Object representing end of list
  */
-function List() {
+function nil() {
 
-  var argToArray = function(arg) {
-    var p = Array();
-    for(var i=0; i<arg.length; i++) 
-      p.push(arg[i]);
+  if ( !(this instanceof nil) ) 
+    return new nil();
 
-    return p
-  };
+  if ( arguments.callee._instance )
+    return arguments.callee._instance;
 
-  var build = function(lst) {
-    if (lst.length === 0) return NilO;
-    else return new Cons(lst[0], build(lst.slice(1)));
-  };
+  arguments.callee._instance = this;
 
-  return build(argToArray(arguments));
+  this._toString = function() { 
+    return "Nil"
+  }
+
+  this.toString = function() { 
+    return "List()";
+  }
+
+  nil.prototype._instance = this;
+
+  return this;
 }
+
+/**
+ * Base part of any list. Represent's A current element + a link to next cons.
+ *
+ * @example
+ *  
+ *  new cons(1, new const(2, new const(3, Nil)));
+ */
+function cons(x, xs) {
+
+  if ( !(this instanceof cons) ) 
+    return new cons(x, xs);
+
+  /**
+   * Pretty print out information about the list
+   *
+   * @return {String} String implementation of the list
+   */
+  this._toString = function() {
+    if (this.head() === nil()) return this.head()._toString();
+    return this.head() + " :: " + this.tail()._toString();
+  }
+
+  this.toString = function() {
+    return "List("+this._toString()+")"
+  };
+
+  /**
+   * Returns the current element in the list
+   *
+   * @return {Object} returns the current element
+   */
+  this.head = function() {
+    return x;
+  };
+
+  /**
+   * Returns a list of everything except the current element
+   *
+   * @return {List} everything except the current element
+   */
+  this.tail = function() {
+    return xs;
+  };
+}
+
+
+/* Both cons and Nil should inherit from _prototype */
+cons.prototype = _prototype;
+nil.prototype = _prototype;
+
+/* utlity method to create an array from <func>.args */
+function _argToArray(arg) {
+  var p = Array();
+  for(var i=0; i<arg.length; i++) 
+    p.push(arg[i]);
+
+  return p
+}
+
+/* Static factory methods */
+
+
+function fromArray(lst) { 
+  if (lst.length === 0) return nil();
+  else return new cons(lst[0], fromArray(lst.slice(1)));
+}
+
+function fromVarargs() { 
+  return fromArray(_argToArray(fromVarargs.arguments))
+}
+
 
 /**
  * Export the public interfaces for List and Nil
  */
 module.exports = {
-  "List" : List,
-  "Nil" : NilO,
+  "fromVarargs" : fromVarargs,
+  "fromArray" : fromArray,
+  "emptyList" : nil,
 }

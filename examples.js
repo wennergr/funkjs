@@ -4,7 +4,7 @@ var fpl = require("./list"),
   assert = require("assert");
 
 
-var list = new fpl.List(1,2,3,4,5,6,7,8,9,10)
+var list = new fpl.fromVarargs(1,2,3,4,5,6,7,8,9,10)
 
 /* Returns 56 */
 list
@@ -40,4 +40,9 @@ list
   .add(5)
   .add(2)
   .take(4)
-  .toString();
+  .toString()
+
+
+lazyList = fpl.unfold('a', function(x) { return 'a'; } );
+
+lazyList.take(4).toString();
