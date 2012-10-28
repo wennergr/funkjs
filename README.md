@@ -8,8 +8,8 @@ Introduction
 ------------
 
 funkjs is a pure functional library without side effects
-and 100% immutable. It consists of a list and a tuple library
-but many other components are under development.
+and 100% immutable. It consists of a list, stream (lazy list) and a tuple library
+Many other components are under development.
 
 
 Documentation
@@ -33,8 +33,15 @@ Get the first element:
     list.head()
 ```
 Get everything but the first element:
-  ```javascript
+```javascript
     list.tail()
+```
+Generation of infinite lists using unfold
+```javascript
+stream
+  .unfold(0, function(x) { return new fpt.Tuple(x, x+1); })
+  .map(function (y) { console.log(y); return y * 2; })
+  .take(5)
 ```
 Combination of different list functions:
 ```javascript
@@ -52,6 +59,14 @@ Example of zipWith (a more generic form then zip):
     list
       .zipWith(function(x,y) { return new fpt.Tuple(x*2, y*2) },
         list.reverse())
+```
+Working with multiple infinite lists and zip
+```javascript
+stream
+  .unfold(0, function(x) { return new fpt.Tuple(x, x+1); })
+  .map(function (y) { console.log(y); return y * 2; })
+  .zip(stream.repeat('a'))
+  .take(10)
 ```
 Another example of dynamically building a immutable list
 ```javascript

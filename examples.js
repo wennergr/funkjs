@@ -1,5 +1,6 @@
 /* Load the library */
 var fpl = require("./list"),
+  fps = require("./stream"),
   fpt = require("./tuple"),
   assert = require("assert");
 
@@ -43,6 +44,18 @@ list
   .toString()
 
 
-lazyList = fpl.unfold('a', function(x) { return 'a'; } );
+/* Returns:
+ * 0 :: 1 :: 2 :: 3 :: 4 :: 5
+ */
+fpl.unfold(0, function(x) { return x < 5 ? new fpt.Tuple(x, x+1) : fpl.emptyList()} );
 
-lazyList.take(4).toString();
+
+/* Returns:
+ * 0 :: 2 :: 4 :: 6 :: 8 :: 10
+ */
+fps
+  .unfold(0, function(x) { return new fpt.Tuple(x, x+1); })
+  .map(function (y) { console.log(y); return y * 2; })
+  .take(5)
+
+
