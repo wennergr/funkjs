@@ -1,6 +1,7 @@
 vows    = require 'vows'
 assert  = require 'assert'
 l       = require "../list"
+fpt     = require "../tuple"
 
 vows
   .describe("An immutable list")
@@ -210,8 +211,17 @@ vows
       'Adding with flatmap': (lst) ->
         assert.equal(l.fromVarargs(1,2,3,4).flatMap( 
             (x) -> new l.fromVarargs(x,x)).toString(),
-          "List(1 :: 1 :: 2 :: 2 :: 3 :: 3 :: 4 :: 4 :: Nil)");
+          "List(1 :: 1 :: 2 :: 2 :: 3 :: 3 :: 4 :: 4 :: Nil)")
 
+  # Verify that a list can be created using unfold
+    'Creating a list using unfold':
+      topic: new l.unfold(0, (x) -> if x > 4 then l.emptyList() else new fpt.Tuple(x, x+1)),
+      'size of of list is correct': (lst) ->
+        assert.equal(lst.length(),  5)
+
+      'Elements are correct': (lst) ->
+        assert.equal(lst.toString(),
+          "List(0 :: 1 :: 2 :: 3 :: 4 :: Nil)")
 
 ).export(module)
 

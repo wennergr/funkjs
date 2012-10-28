@@ -372,6 +372,11 @@ function fromVarargs() {
   return fromArray(_argToArray(fromVarargs.arguments))
 }
 
+function unfold(init, fn) {
+  var t = fn(init);
+  if (t == nil()) return nil();
+  else return new cons(t.first(), new unfold(t.second(), fn));
+}
 
 /**
  * Export the public interfaces for List and Nil
@@ -380,4 +385,5 @@ module.exports = {
   "fromVarargs" : fromVarargs,
   "fromArray" : fromArray,
   "emptyList" : nil,
+  "unfold" : unfold
 }
