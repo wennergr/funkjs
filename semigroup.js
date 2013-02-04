@@ -102,6 +102,36 @@ var numberMinSemigroup = new semigroup2(function (a,b) {
 
 
 /**
+ * Semigroup that concatinates two strings
+ */
+var stringSemigroup = new semigroup2(function (a,b) {
+    return a+b;
+});
+
+
+/**
+ * Semigroup that run logical OR on two booleans
+ */
+var disjunctionSemigroup = new semigroup2(function (a,b) {
+    return a || b;
+});
+
+/**
+ * Semigroup that run logical XOR on two booleans
+ */
+var exclusiveDisjunctionSemigroup = new semigroup2(function (a,b) {
+    return a ^ b;
+});
+
+/**
+ * Semigroup that run logical AND on two booleans
+ */
+var conjunctionSemigroup = new semigroup2(function (a,b) {
+    return a && b;
+});
+
+
+/**
  * Export the public interfaces for Semigroups
  */
 module.exports = {
@@ -110,6 +140,11 @@ module.exports = {
   "numberAdditionSemigroup" : numberAdditionSemigroup,
   "numberMultiplicationSemigroup" : numberMultiplicationSemigroup,
   "numberMinSemigroup" : numberMinSemigroup,
-  "numberMaxSemigroup" : numberMaxSemigroup
-}
+  "numberMaxSemigroup" : numberMaxSemigroup,
+  "stringSemigroup" : stringSemigroup,
+  "disjunctionSemigroup" : disjunctionSemigroup,
+  "exclusiveDisjunctionSemigroup" : exclusiveDisjunctionSemigroup,
+  "conjunctionSemigroup" : conjunctionSemigroup
+};
+
 

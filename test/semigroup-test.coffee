@@ -61,10 +61,60 @@ vows
       'associativity': (nms) ->
         assert.equal(nms.sum(nms.sum(1,2), 3), nms.sum(1, nms.sum(2,3)))
 
+    'String concatination Semigroup':
+      topic: semigroup.stringSemigroup
+      'concat' : (ss) ->
+        assert.equal(ss.sum('foo','bar'), 'foobar')
+
+      'composition': (ss) ->
+        assert.equal(ss.sum(ss.sum('foo','bar'), 'fnord'), 'foobarfnord')
+
+      'associativity': (ss) ->
+        assert.equal(ss.sum(ss.sum('foo','bar'), 'fnord'), ss.sum('foo', ss.sum('bar','fnord')))
+
+    'Disjunction Semigroup':
+      topic: semigroup.disjunctionSemigroup
+      'disjunction' : (ds) ->
+        assert.equal(ds.sum(true,false), true)
+        assert.equal(ds.sum(false,true), true)
+        assert.equal(ds.sum(true,true), true)
+        assert.equal(ds.sum(false,false), false)
+
+      'composition': (ds) ->
+        assert.equal(ds.sum(ds.sum(false,false), true), true)
+
+      'associativity': (ds) ->
+        assert.equal(ds.sum(ds.sum(false,true), false), ds.sum(false, ds.sum(true,false)))
+
+    'Exclusive Disjunction Semigroup':
+      topic: semigroup.exclusiveDisjunctionSemigroup
+      'eclusive disjunction' : (eds) ->
+        assert.equal(eds.sum(true,true), false)
+        assert.equal(eds.sum(true,false), true)
+        assert.equal(eds.sum(false,true), true)
+        assert.equal(eds.sum(false,false), false)
+
+      'composition': (eds) ->
+        assert.equal(eds.sum(eds.sum(false,false), true), true)
+
+      'associativity': (eds) ->
+        assert.equal(eds.sum(eds.sum(false,true), false), eds.sum(false, eds.sum(true,false)))
+
+    'Conjunction Semigroup':
+      topic: semigroup.conjunctionSemigroup
+      'eclusive disjunction' : (cs) ->
+        assert.equal(cs.sum(true,true), true)
+        assert.equal(cs.sum(true,false), false)
+        assert.equal(cs.sum(false,true), false)
+        assert.equal(cs.sum(false,false), false)
+
+      'composition': (cs) ->
+        assert.equal(cs.sum(cs.sum(false,false), true), false)
+        assert.equal(cs.sum(cs.sum(true,true), true), true)
+
+      'associativity': (cs) ->
+        assert.equal(cs.sum(cs.sum(false,true), false), cs.sum(false, cs.sum(true,false)))
+
 
 ).export(module)
-
-
-#  "numberMinSemigroup" : numberMinSemigroup,
-#  "numberMaxSemigroup" : numberMaxSemigroup
 
