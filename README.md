@@ -7,10 +7,16 @@ funkjs
 Introduction
 ------------
 
-funkjs is a pure functional library without side effects
-and 100% immutable. It consists of a list, stream (lazy list) and a tuple library
-Many other components are under development.
+funkjs is a pure functional immutable library without side effects.
+It consists of:
+ * list library (good to have functional list library)
+ * stream library (lazy list)
+ * tuple (immutable tuple implementation)
+ * semigroup (basic semigroup library + 8 predefined semigroups)
 
+It has 100% test coverage using vows.
+
+Many other components are under development.
 
 Documentation
 -------------
@@ -75,6 +81,11 @@ Another example of dynamically building a immutable list
       .add(2)
       .take(4)
 ```
+
+```javascript
+semigroup.stringSemigroup.sum('foo', 'bar') => 'foobar'
+```
+
 Author
 ------
 Tobias Wenergren (wennergr@gmail.com)
