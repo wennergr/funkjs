@@ -2,6 +2,9 @@ vows      = require 'vows'
 assert    = require 'assert'
 monoid    = require "../monoid"
 semigroup = require "../semigroup"
+list      = require "../list"
+stream    = require "../stream"
+
 
 vows
   .describe("A monoid")
@@ -130,6 +133,41 @@ vows
         assert.equal(cs.sum(false, cs.zero()), false);
         assert.equal(cs.sum(cs.zero(), true), true);
         assert.equal(cs.sum(cs.zero(), false), false);
+
+    'List monoid':
+      topic: monoid.listMonoid
+      'list' : (cs) ->
+        assert.equal(cs.sum(list.fromVarargs(1,2), list.fromVarargs(3,4)).toString(), "List(1 :: 2 :: 3 :: 4 :: Nil)")
+
+      'composition': (cs) ->
+        assert.equal(cs.sum(cs.sum(list.fromVarargs(1,2), list.fromVarargs(3)), list.fromVarargs(4,5)).toString(), 
+          "List(1 :: 2 :: 3 :: 4 :: 5 :: Nil)")
+
+      'associativity': (cs) ->
+        assert.equal(cs.sum(cs.sum(list.fromVarargs(1,2), list.fromVarargs(3)), list.fromVarargs(4,5)).toString(), 
+          cs.sum(list.fromVarargs(1,2), cs.sum(list.fromVarargs(3), list.fromVarargs(4,5))).toString())
+
+      'identity': (cs) ->
+        assert.equal(cs.sum(list.fromVarargs(1,2), cs.zero()), "List(1 :: 2 :: Nil)");
+        assert.equal(cs.sum(cs.zero(), list.fromVarargs(1,2)), "List(1 :: 2 :: Nil)");
+
+
+    'Stream monoid':
+      topic: monoid.streamMonoid
+      'stream' : (cs) ->
+        assert.equal(cs.sum(stream.fromVarargs(1,2), stream.fromVarargs(3,4)).toString(), "Stream(1 :: 2 :: 3 :: 4 :: Nil)")
+
+      'composition': (cs) ->
+        assert.equal(cs.sum(cs.sum(stream.fromVarargs(1,2), stream.fromVarargs(3)), stream.fromVarargs(4,5)).toString(), 
+          "Stream(1 :: 2 :: 3 :: 4 :: 5 :: Nil)")
+
+      'associativity': (cs) ->
+        assert.equal(cs.sum(cs.sum(stream.fromVarargs(1,2), stream.fromVarargs(3)), stream.fromVarargs(4,5)).toString(), 
+          cs.sum(stream.fromVarargs(1,2), cs.sum(stream.fromVarargs(3), stream.fromVarargs(4,5))).toString())
+
+      'identity': (cs) ->
+        assert.equal(cs.sum(stream.fromVarargs(1,2), cs.zero()), "Stream(1 :: 2 :: Nil)");
+        assert.equal(cs.sum(cs.zero(), stream.fromVarargs(1,2)), "Stream(1 :: 2 :: Nil)");
 
 
 ).export(module)

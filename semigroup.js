@@ -1,3 +1,6 @@
+list = require("./list");
+stream = require("./stream");
+
 /**
  * Semigroup implementation
  *
@@ -130,6 +133,20 @@ var conjunctionSemigroup = new semigroup2(function (a,b) {
     return a && b;
 });
 
+/**
+ * Semigroup for lists
+ */
+var listSemigroup = new semigroup2(function (a,b) {
+  return a.concat(b);
+});
+
+/**
+ * Semigroup for stream
+ */
+var streamSemigroup = new semigroup2(function (a,b) {
+  return a.concat(b);
+});
+
 
 /**
  * Export the public interfaces for Semigroups
@@ -144,6 +161,8 @@ module.exports = {
   "stringSemigroup" : stringSemigroup,
   "disjunctionSemigroup" : disjunctionSemigroup,
   "exclusiveDisjunctionSemigroup" : exclusiveDisjunctionSemigroup,
+  "listSemigroup" : listSemigroup,
+  "streamSemigroup" : streamSemigroup,
   "conjunctionSemigroup" : conjunctionSemigroup
 };
 

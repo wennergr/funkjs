@@ -1,4 +1,6 @@
 var s = require('./semigroup')
+var list = require('./list')
+var stream = require('./stream')
 
 /**
  * Monoid implementation
@@ -123,6 +125,17 @@ var exclusiveDisjunctionMonoid = monoidS(s.exclusiveDisjunctionSemigroup, false)
 var conjunctionMonoid = monoidS(s.conjunctionSemigroup, true);
 
 /**
+ * Monoid for list concatination
+ */
+var listMonoid = monoidS(s.listSemigroup, list.emptyList());
+
+/**
+ * Monoid for list stream concatination
+ */
+var streamMonoid = monoidS(s.streamSemigroup, stream.emptyStream());
+
+
+/**
  * Export the public interfaces for Monoids
  */
 module.exports = {
@@ -134,5 +147,8 @@ module.exports = {
   "stringMonoid" : stringMonoid,
   "disjunctionMonoid" : disjunctionMonoid,
   "exclusiveDisjunctionMonoid" : exclusiveDisjunctionMonoid,
-  "conjunctionMonoid" : conjunctionMonoid
+  "conjunctionMonoid" : conjunctionMonoid,
+  "listMonoid" : listMonoid,
+  "streamMonoid" : streamMonoid
 };
+

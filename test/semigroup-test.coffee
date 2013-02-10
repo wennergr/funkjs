@@ -1,6 +1,8 @@
 vows    = require 'vows'
 assert  = require 'assert'
 semigroup = require "../semigroup"
+list = require "../list"
+stream = require "../stream"
 
 vows
   .describe("A semigroup")
@@ -114,6 +116,33 @@ vows
 
       'associativity': (cs) ->
         assert.equal(cs.sum(cs.sum(false,true), false), cs.sum(false, cs.sum(true,false)))
+
+    'List Semigroup':
+      topic: semigroup.listSemigroup
+      'list' : (cs) ->
+        assert.equal(cs.sum(list.fromVarargs(1,2), list.fromVarargs(3,4)).toString(), "List(1 :: 2 :: 3 :: 4 :: Nil)")
+
+      'composition': (cs) ->
+        assert.equal(cs.sum(cs.sum(list.fromVarargs(1,2), list.fromVarargs(3)), list.fromVarargs(4,5)).toString(), 
+          "List(1 :: 2 :: 3 :: 4 :: 5 :: Nil)")
+
+      'associativity': (cs) ->
+        assert.equal(cs.sum(cs.sum(list.fromVarargs(1,2), list.fromVarargs(3)), list.fromVarargs(4,5)).toString(), 
+          cs.sum(list.fromVarargs(1,2), cs.sum(list.fromVarargs(3), list.fromVarargs(4,5))).toString())
+
+    'Stream Semigroup':
+      topic: semigroup.streamSemigroup
+      'stream' : (cs) ->
+        assert.equal(cs.sum(stream.fromVarargs(1,2), stream.fromVarargs(3,4)).toString(), "Stream(1 :: 2 :: 3 :: 4 :: Nil)")
+
+      'composition': (cs) ->
+        assert.equal(cs.sum(cs.sum(stream.fromVarargs(1,2), stream.fromVarargs(3)), stream.fromVarargs(4,5)).toString(), 
+          "Stream(1 :: 2 :: 3 :: 4 :: 5 :: Nil)")
+
+      'associativity': (cs) ->
+        assert.equal(cs.sum(cs.sum(stream.fromVarargs(1,2), stream.fromVarargs(3)), stream.fromVarargs(4,5)).toString(), 
+          cs.sum(stream.fromVarargs(1,2), cs.sum(stream.fromVarargs(3), stream.fromVarargs(4,5))).toString())
+
 
 
 ).export(module)
