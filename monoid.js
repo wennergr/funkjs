@@ -159,3 +159,4 @@ module.exports = {
   "listMonoid" : listMonoid,
   "streamMonoid" : streamMonoid,
   "functionMonoid" : functionMonoid
+};
