@@ -134,6 +134,14 @@ var listMonoid = monoidS(s.listSemigroup, list.emptyList());
  */
 var streamMonoid = monoidS(s.streamSemigroup, stream.emptyStream());
 
+/**
+ * monoid for functions
+ */
+function functionMonoid(mb) {
+  return new monoidS(s.functionSemigroup(mb), mb.zero());
+}
+
+
 
 /**
  * Export the public interfaces for Monoids
@@ -149,6 +157,5 @@ module.exports = {
   "exclusiveDisjunctionMonoid" : exclusiveDisjunctionMonoid,
   "conjunctionMonoid" : conjunctionMonoid,
   "listMonoid" : listMonoid,
-  "streamMonoid" : streamMonoid
-};
-
+  "streamMonoid" : streamMonoid,
+  "functionMonoid" : functionMonoid

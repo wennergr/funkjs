@@ -147,6 +147,17 @@ var streamSemigroup = new semigroup2(function (a,b) {
   return a.concat(b);
 });
 
+/**
+ * Semigroup for functions
+ */
+function functionSemigroup(sb) {
+  return new semigroup2(function (a1,a2) {
+    return function(a) {
+      return sb.sum(a1(a), a2(a));
+    };
+  });
+}
+
 
 /**
  * Export the public interfaces for Semigroups
@@ -163,7 +174,8 @@ module.exports = {
   "exclusiveDisjunctionSemigroup" : exclusiveDisjunctionSemigroup,
   "listSemigroup" : listSemigroup,
   "streamSemigroup" : streamSemigroup,
-  "conjunctionSemigroup" : conjunctionSemigroup
+  "conjunctionSemigroup" : conjunctionSemigroup,
+  "functionSemigroup" : functionSemigroup
 };
 
 
