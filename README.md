@@ -12,7 +12,8 @@ It consists of:
  * list library (good to have functional list library)
  * stream library (lazy list)
  * tuple (immutable tuple implementation)
- * semigroup (basic semigroup library + 8 predefined semigroups)
+ * semigroup (basic semigroup library + 11 predefined semigroups)
+ * monoid (basic monoid library + 9 predefined monoids)
 
 It has 100% test coverage using vows.
 
